@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Soaad got an L!</title>
+        <title>Soaad got a L!</title>
 
         <style>
             *{
@@ -26,17 +26,22 @@
             div {
                 width: 100vw;
                 height: 100vh;
-                background: url('./media/soda.jpg');
-                background-repeat: no-repeat;
-                background-attachment: fixed;
-                background-position: center; 
-                background-size: auto 100vh;
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-content: center;
+            }
+
+            div img {
+                display: block;
+                height: 100%;
+                width: auto;
             }
         </style>
     </head>
     <body>
         <div>
-
+            <img src="./media/soda.jpg" />
         </div>    
     </body>
 </html>
