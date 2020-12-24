@@ -3,11 +3,15 @@
     <head>
         <title>Soaad got an L!</title>
 
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=PT+Sans&display=swap" rel="stylesheet"> 
+
         <style>
             *{
                 padding: 0;
                 margin: 0;
-                transition-duration: 0.5s;
+                transition-duration: 0.25s;
+                font-family: 'PT Sans', sans-serif;
             }
 
             body {
@@ -24,7 +28,7 @@
                 cursor: url("./media/l.png"), auto;
             }
             
-            div {
+            .img-div {
                 width: 100vw;
                 height: 100vh;
                 display: flex;
@@ -35,13 +39,15 @@
 
             div img {
                 display: block;
+                z-index: -2;
                 width: auto;
                 height: auto;  
                 max-width: 100vw;
                 max-height: 100vh;   
                 overflow: auto;
                 -o-object-fit: contain;
-                object-fit: contain;         
+                object-fit: contain;  
+                display: none;       
             }
 
             .nav {
@@ -77,7 +83,102 @@
                 cursor: pointer;
             }
 
-            
+            .active {
+                display: block;
+            }
+
+            .timeline-container {
+                position: fixed;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-around;
+                width: 100%;
+                height: auto;
+                top: 80%;
+            }
+
+            .timeline {
+                z-index: -2;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-around;
+                min-width: 600px;
+                padding: 0 0px 0 0px;
+                width: auto;
+                height: auto;
+                background-color: rgba(51, 51, 51, 0);
+                border-radius: 5px;
+                border-top: 2px solid white;
+            }
+
+            .timeline-item {
+                padding: 0;
+                margin: 0;
+                width: 120px; 
+                min-height: 50px;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                align-items: center;
+                font-size: 16pt;
+                color: rgb(255, 255, 255);
+
+            }
+
+            .timeline-item:hover *{
+                font-size: 17pt;
+        
+            }
+
+            .timeline-item:hover{
+                cursor: pointer;
+        
+            }
+
+            .timeline-item .item {
+                position: relative;
+                bottom: 7px;
+                width: 10px;
+                height: 10px;
+                background-color: rgb(255, 255, 255);
+                border: 1px solid rgb(255, 255, 255);
+                border-radius: 50%;
+                -webkit-box-shadow: 0px 0px 18px -7px rgba(0,0,0,1);
+                -moz-box-shadow: 0px 0px 18px -7px rgba(0,0,0,1);
+                box-shadow: 0px 0px 18px -7px rgba(0,0,0,1);
+            }
+
+            .timeline-item:hover .item{
+                font-size: 17pt;
+                cursor: pointer;
+            }
+
+            .active-item {
+                color: rgb(243, 178, 57);
+            }
+
+            .active-item .item {
+                border: 1px solid rgb(243, 178, 57);
+                background-color: rgb(243, 178, 57);
+            }
+
+            .disabled {
+                color: rgb(126, 126, 126);
+                
+            }
+
+            .disabled .item {
+                border: 0px;
+                background: rgb(126, 126, 126);
+            }
+
+            .disabled:hover, .disabled:hover  * {
+                font-size: 16pt;
+                cursor: url("./media/l.png"), auto;
+            }
+
         </style>
     </head>
     <body>
@@ -91,8 +192,92 @@
             </a>
             
         </div>
-        <div>
-            <img src="./media/soda.jpg" />
-        </div>    
+        <div class="img-div">
+            <img id="i0" class="active" src="./media/soda.jpg" />
+            <img id="i1" class="" src="./media/mb.jpg" />
+        </div>
+        
+        <div class="timeline-container">
+            <div class="timeline">
+                <div class="timeline-item active-item" data-id="i0">
+                    <div class="item"></div>
+                    <div>2019</div>
+                </div>
+                <div class="timeline-item" data-id="i1">
+                    <div class="item"></div>
+                    <div>2020</div>
+                </div>
+                <div class="timeline-item disabled">
+                    <div class="item"></div>
+                    <div>2021</div>
+                </div>
+            </div>
+        </div>
+        
+        <script>
+
+            window.onload = function() {
+
+                // not used (maybe later...)
+                var items = {
+                    i0: {
+                        pic:"soda.jpg",
+                        bg:"sodabg.jpg"
+                    },
+                    i1: {
+                        pic:"mb.jpg",
+                        bg:"mbbg.jpg"
+                    }
+                };
+                
+
+                var changeView = function(target) {
+                    console.log(target);
+
+                    if (target.dataset.id) {
+                        // change active item
+                        // .active-item
+
+                        // remove class 
+                        var elems = document.querySelectorAll(".timeline-item");
+                        elems.forEach(function(e) {
+                            e.classList.remove("active-item");
+                        });
+
+                        // add class
+                        target.classList.add("active-item");
+
+                        // remove class 
+                        var elems = document.querySelectorAll(".img-div img");
+                        elems.forEach(function(e) {
+                            e.classList.remove("active");
+                        });
+
+                        // add class
+                        var elems = document.querySelectorAll("#" + target.dataset.id);
+                        elems.forEach(function(e) {
+                            e.classList.add("active");
+                        });
+
+                        document.body.style.background = "rgba(0, 0, 0, 0) url('./media/" + items[target.dataset.id].bg + "') no-repeat fixed center/cover";
+                    
+                    }
+                }
+                
+                var elems = document.querySelectorAll(".timeline-item");
+
+                elems.forEach(function(e) {
+                    e.addEventListener("click", function(event) {
+                        event.preventDefault();
+                        if (e !== event.target) {
+                            changeView(event.target.parentElement);
+                        }
+                        else {
+                            changeView(event.target);
+                        }
+                    }, false)
+                });
+            }
+        </script>
     </body>
 </html>
