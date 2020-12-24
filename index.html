@@ -105,11 +105,12 @@
                 align-items: center;
                 justify-content: space-around;
                 min-width: 600px;
-                padding: 0 150px 0 150px;
+                padding: 0 0px 0 0px;
                 width: auto;
                 height: auto;
                 background-color: rgba(51, 51, 51, 0);
                 border-radius: 5px;
+                border-top: 2px solid white;
             }
 
             .timeline-item {
@@ -137,6 +138,8 @@
             }
 
             .timeline-item .item {
+                position: relative;
+                bottom: 7px;
                 width: 10px;
                 height: 10px;
                 background-color: rgb(255, 255, 255);
@@ -150,18 +153,6 @@
             .timeline-item:hover .item{
                 font-size: 17pt;
                 cursor: pointer;
-            }
-
-            .timeline-line {
-                min-width: 500px;
-                width: auto;
-                max-width: 95%;
-                height: 2px;
-                background-color: rgb(233, 233, 233);
-                position: fixed;
-                z-index: -1;
-                opacity: 60%;
-                top: 80.35%;
             }
 
             .active-item {
@@ -203,12 +194,11 @@
         </div>
         <div class="img-div">
             <img id="i0" class="active" src="./media/soda.jpg" />
-            <img id="i1" class="" src="./media/sodabg.jpg" />
+            <img id="i1" class="" src="./media/mb.jpg" />
         </div>
         
         <div class="timeline-container">
             <div class="timeline">
-                <div class="timeline-line"></div>
                 <div class="timeline-item active-item" data-id="i0">
                     <div class="item"></div>
                     <div>2019</div>
@@ -268,6 +258,9 @@
                         elems.forEach(function(e) {
                             e.classList.add("active");
                         });
+
+                        document.body.style.background = "rgba(0, 0, 0, 0) url('./media/" + items[target.dataset.id].bg + "') no-repeat fixed center/cover";
+                    
                     }
                 }
                 
