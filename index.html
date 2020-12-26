@@ -62,7 +62,7 @@
                 display: flex;
                 flex-direction: row;
                 align-items: center;
-                justify-content: flex-end;
+                justify-content: space-between;
                 width: 100%;
                 height: 100px;
             }
@@ -78,6 +78,19 @@
 
             .nav-item:hover {
                 border-bottom: 1px solid white;
+            }
+
+            .nav-section {
+                display: flex;
+                flex-direction: row;
+            }
+
+            .nav-right {
+                justify-content: flex-end;
+            }
+
+            .nav-left {
+                justify-content: flex-start;
             }
 
             .container {
@@ -186,17 +199,88 @@
                 cursor: url("./media/l.png"), auto;
             }
 
+            .countdown {
+                margin-left: 20px;
+                min-width: 330px;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0;
+                border-radius: 4px;                
+            }
+
+            .countdown .values{
+                width: 100%;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                padding: 10px 0 0 0;
+                border-radius: 4px;
+            }
+
+            .countdown-item {
+                color: white;
+                font-weight: 1000;
+                font-size: 28pt;
+            }
+
+            .progress {
+                width: 100%;
+                height: 15px;
+                border: 1px solid white;
+                border-radius: 2px;
+                margin: 0 0 10px 0;
+            }
+
+            .bar {
+                height: 100%;
+                background-color: red;
+                border-radius: 2px;
+            }
+
+            #babyyoda {
+                margin-left: 10px;
+                width: 150px;
+                height: auto;
+                display: block;
+                margin-top: 10px;
+                border-radius: 2px;
+            }
+
         </style>
     </head>
     <body>
         <div class="nav">
-            <a class="container" href="/zoom" target="_blank">
-                <img class="nav-item" src="https://d24cgw3uvb9a9h.cloudfront.net/static/94129/image/new/ZoomLogo.png"/>
-            </a>
-            <a class="container" href="/discord" target="_blank">
-                <!-- https://discord.gg/XD2D8dudaf -->
-                <img class="nav-item" src="./media/discord.png"/>
-            </a>
+            <div class="nav-right nav-section">
+                <img src="./media/babyyoda.jpg" id="babyyoda"/>
+                <div id="christmas-countdown" class="countdown">
+                    <div class="values">
+                        <div class="days countdown-item"></div>
+                        <div class="hours countdown-item"></div>
+                        <div class="minutes countdown-item"></div>
+                        <div class="seconds countdown-item"></div>
+                    </div>
+                    <div class="progress">
+                        <div class="bar">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-left nav-section">
+                <a class="container" href="/zoom" target="_blank">
+                    <img class="nav-item" src="https://d24cgw3uvb9a9h.cloudfront.net/static/94129/image/new/ZoomLogo.png"/>
+                </a>
+                <a class="container" href="/discord" target="_blank">
+                    <!-- https://discord.gg/XD2D8dudaf -->
+                    <img class="nav-item" src="./media/discord.png"/>
+                </a>
+            </div>
+            
+            
+            
             
         </div>
         <div class="img-div">
@@ -222,8 +306,61 @@
         </div>
         
         <script>
+            const start = 'December 25 2020 00:00:00 GMT-0500';
+            const christmas = 'December 25 2021 00:00:00 GMT-0500';
+
+            function getTimeRemaining(){
+
+                const progress = Date.parse(christmas) - Date.parse(new Date());
+                const seconds = Math.floor( (progress/1000) % 60 );
+                const minutes = Math.floor( (progress/1000/60) % 60 );
+                const hours = Math.floor( (progress/(1000*60*60)) % 24 );
+                const days = Math.floor( progress/(1000*60*60*24) );
+
+                const total = Date.parse(christmas) - Date.parse(start);
+                const percentage = 1 - (progress/total);
+
+                return {
+                    total,
+                    percentage,
+                    days,
+                    hours,
+                    minutes,
+                    seconds
+                };
+            }
+
+            function initializeClock(id) {
+                const clock = document.getElementById(id);
+                const daysDiv = clock.querySelector('.days');
+                const hoursDiv = clock.querySelector('.hours');
+                const minutesDiv = clock.querySelector('.minutes');
+                const secondsDiv = clock.querySelector('.seconds');
+                const bar = clock.querySelector('.bar');
+
+                function updateClock(){
+                    const t = getTimeRemaining();
+                    daysDiv.innerHTML = ("00" + t.days).slice(-3) + "d";
+                    hoursDiv.innerHTML = ("0" + t.hours).slice(-2) + "h";
+                    minutesDiv.innerHTML = ("0" + t.minutes).slice(-2) + "m";
+                    secondsDiv.innerHTML = ("0" + t.seconds).slice(-2) + "s";
+
+                    bar.style.width = (t.percentage * 100) + "%";
+
+                    if (t.total <= 0) {
+                        clearInterval(timeinterval);
+                    }
+                }
+
+                updateClock(); // run function once at first to avoid delay
+                var timeinterval = setInterval(updateClock,1000);
+
+            }
+
 
             window.onload = function() {
+
+                initializeClock("christmas-countdown");
 
                 // not used (maybe later...)
                 var items = {
